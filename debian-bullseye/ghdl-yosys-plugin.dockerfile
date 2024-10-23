@@ -20,14 +20,18 @@
 # SPDX-License-Identifier: Apache-2.0
 
 ARG REGISTRY='gcr.io/hdl-containers/debian/bullseye'
+#ARG REGISTRY='localhost'
+
 
 #---
 
-FROM $REGISTRY/yosys AS base
+FROM localhost/pkg/yosys AS base
 
 RUN apt-get update -qq \
  && DEBIAN_FRONTEND=noninteractive apt-get -y install --no-install-recommends \
     libgnat-9 \
+    g++ \
+    make \
  && apt-get autoclean && apt-get clean && apt-get -y autoremove \
  && rm -rf /var/lib/apt/lists
 

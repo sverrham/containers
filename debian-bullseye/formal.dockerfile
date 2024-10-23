@@ -20,7 +20,8 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-ARG REGISTRY='gcr.io/hdl-containers/debian/bullseye'
+#ARG REGISTRY='gcr.io/hdl-containers/debian/bullseye'
+ARG REGISTRY='localhost'
 
 #---
 
@@ -28,7 +29,7 @@ ARG REGISTRY='gcr.io/hdl-containers/debian/bullseye'
 FROM $REGISTRY/pkg/z3 AS pkg-z3
 FROM $REGISTRY/pkg/sby AS pkg-sby
 
-FROM $REGISTRY/ghdl/yosys AS min
+FROM $REGISTRY/pkg/ghdl-yosys AS min
 
 COPY --from=pkg-z3 /z3 /
 COPY --from=pkg-sby /sby /
@@ -38,7 +39,7 @@ RUN apt-get update -qq \
     python3 \
     python3-pip \
  && apt-get autoclean && apt-get clean && apt-get -y autoremove \
- && rm -rf /var/lib/apt/lists/* \
+# && rm -rf /var/lib/apt/lists/* \
  && python3 -m pip install click --progress-bar off
 
 #---
@@ -59,8 +60,8 @@ COPY --from=pkg-pono /pono /
 RUN apt-get update -qq \
  && DEBIAN_FRONTEND=noninteractive apt-get -y install --no-install-recommends \
     libgmpxx4ldbl \
- && apt-get autoclean && apt-get clean && apt-get -y autoremove \
- && rm -rf /var/lib/apt/lists/*
+ && apt-get autoclean && apt-get clean && apt-get -y autoremove 
+# && rm -rf /var/lib/apt/lists/*
 
 #---
 

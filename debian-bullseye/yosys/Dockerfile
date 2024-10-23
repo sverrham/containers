@@ -20,10 +20,11 @@
 # SPDX-License-Identifier: Apache-2.0
 
 ARG REGISTRY='gcr.io/hdl-containers/debian/bullseye'
+--ARG REGISTRY='localhost/pkg'
 
 #---
 
-FROM $REGISTRY/iverilog AS build
+FROM localhost/pkg/iverilog AS build
 
 RUN --mount=type=bind,target=/tmp/ctx . /tmp/ctx/HDLC \
  && apt-get update -qq \
